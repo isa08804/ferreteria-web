@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ferretería El Yunque | Herramienta y material de construcción</title>
+  <meta name="description" content="Ferretería El Yunque: herramienta, plomería, eléctrico y material de construcción con entrega el mismo día.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo+Narrow:wght@500;700&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ============================================================
+       TOKENS DE DISEÑO
+       Paleta tomada del mundo de la ferretería: tinta de acero,
+       galvanizado, amarillo de seguridad y rojo de minio.
+       ============================================================ */
+    :root {
+      --tinta:    #16232E;
+      --acero:    #4A5C68;
+      --zinc:     #DCDDD6;
+      --papel:    #F7F7F4;
+      --amarillo: #F5C518;
+      --minio:    #C1352B;
+
+      --display: "Archivo Black", "Arial Black", sans-serif;
+      --texto:   "Archivo", Arial, Helvetica, sans-serif;
+      --dato:    "Archivo Narrow", "Arial Narrow", Arial, sans-serif;
+
+      --ancho: 1120px;
+      --radio: 4px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--papel);
+      color: var(--tinta);
+      font-family: var(--texto);
+      font-size: 1rem;
+      line-height: 1.65;
+    }
+
+    .contenedor {
+      width: 100%;
+      max-width: var(--ancho);
+      margin-inline: auto;
+      padding-inline: 1.25rem;
+    }
+
+    h1, h2, h3 { font-family: var(--display); line-height: 1.08; letter-spacing: -0.01em; margin: 0; }
+    h2 { font-size: clamp(1.6rem, 4.5vw, 2.5rem); text-transform: uppercase; }
+    h3 { font-size: 1.15rem; }
+    p  { margin: 0 0 1rem; }
+    a  { color: var(--tinta); }
+
+    /* Enlace de salto para lectores de pantalla y teclado */
+    .salto {
+      position: absolute;
+      left: -9999px;
+      background: var(--amarillo);
+      color: var(--tinta);
+      padding: .75rem 1rem;
+      font-weight: 600;
+      z-index: 100;
+    }
+    .salto:focus { left: 1rem; top: 1rem; }
+
+    :focus-visible {
+      outline: 3px solid var(--minio);
+      outline-offset: 3px;
+    }
+
+    /* ============================================================
+       ELEMENTO FIRMA: la regla graduada (cinta métrica)
+       Se repite como divisor entre secciones.
+       ============================================================ */
+    .regla {
+      height: 26px;
+      background:
+        repeating-linear-gradient(to right,
+          var(--tinta) 0 2px, transparent 2px 20px),
+        repeating-linear-gradient(to right,
+          transparent 0 98px, var(--tinta) 98px 100px),
+        var(--amarillo);
+      background-size: 100% 10px, 100% 18px, 100% 100%;
+      background-repeat: repeat-x;
+      background-position: left top, left top, left top;
+      border-bottom: 2px solid var(--tinta);
+    }
+
+    /* ============================================================
+       ENCABEZADO Y NAVEGACIÓN
+       ============================================================ */
+    .cabecera {
+      background: var(--tinta);
+      color: var(--papel);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .cabecera__fila {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+      padding-block: 1rem;
+    }
+
+    .marca { display: flex; align-items: center; gap: .7rem; }
+
+    .marca__icono {
+      width: 40px;
+      height: 40px;
+      flex: none;
+      background: var(--amarillo);
+      display: grid;
+      place-items: center;
+      font-family: var(--display);
+      color: var(--tinta);
+      font-size: 1.3rem;
+    }
+
+    .marca__nombre {
+      font-size: clamp(1.05rem, 3.5vw, 1.4rem);
+      color: var(--papel);
+      text-transform: uppercase;
+    }
+
+    .marca__lema {
+      font-family: var(--dato);
+      font-size: .8rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--amarillo);
+      display: block;
+      margin-top: .15rem;
+    }
+
+    .menu ul {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .3rem 1.25rem;
+      margin: 0;
+      padding: 0;
+    }
+
+    .menu a {
+      color: var(--papel);
+      text-decoration: none;
+      font-family: var(--dato);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding-block: .35rem;
+      display: inline-block;
+      position: relative;
+    }
+
+    /* La subrayado crece como una cinta métrica que se extiende */
+    .menu a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 0;
+      background: var(--amarillo);
+      transition: width .25s ease;
+    }
+    .menu a:hover::after,
+    .menu a:focus-visible::after { width: 100%; }
+
+    /* ============================================================
+       SECCIONES
+       ============================================================ */
+    .seccion { padding-block: clamp(2.5rem, 7vw, 4.5rem); }
+    .seccion--zinc { background: var(--zinc); }
+
+    .rotulo {
+      font-family: var(--dato);
+      font-size: .85rem;
+      font-weight: 700;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--minio);
+      margin: 0 0 .5rem;
+    }
+
+    .entradilla {
+      max-width: 62ch;
+      margin-top: 1rem;
+      color: var(--acero);
+    }
+
+    /* Presentación: imagen + texto */
+    .presentacion {
+      display: grid;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .presentacion figure { margin: 0; }
+
+    .presentacion img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border: 3px solid var(--tinta);
+      border-radius: var(--radio);
+    }
+
+    .presentacion figcaption {
+      font-family: var(--dato);
+      font-size: .9rem;
+      letter-spacing: .05em;
+      color: var(--acero);
+      padding-top: .6rem;
+    }
+
+    .datos {
+      list-style: none;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1px;
+      background: var(--tinta);
+      border: 2px solid var(--tinta);
+    }
+
+    .datos li { background: var(--papel); padding: .9rem 1rem; }
+
+    .datos b {
+      display: block;
+      font-family: var(--display);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .datos span {
+      font-family: var(--dato);
+      font-size: .82rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--acero);
+    }
+
+    /* ============================================================
+       TABLA DE INFORMACIÓN
+       ============================================================ */
+    .tabla-marco { overflow-x: auto; margin-top: 1.75rem; }
+
+    table {
+      width: 100%;
+      min-width: 560px;
+      border-collapse: collapse;
+      background: var(--papel);
+      border: 2px solid var(--tinta);
+    }
+
+    caption {
+      caption-side: top;
+      text-align: left;
+      font-family: var(--dato);
+      font-size: .88rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--acero);
+      padding-bottom: .6rem;
+    }
+
+    thead th {
+      background: var(--tinta);
+      color: var(--papel);
+      font-family: var(--dato);
+      font-size: .9rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    th, td {
+      padding: .7rem .85rem;
+      text-align: left;
+      border-bottom: 1px solid var(--zinc);
+    }
+
+    tbody th { font-weight: 600; }
+    tbody tr:nth-child(even) { background: #EFEFEA; }
+    tbody tr:last-child th, tbody tr:last-child td { border-bottom: 0; }
+
+    .precio { font-family: var(--dato); font-weight: 700; white-space: nowrap; }
+
+    .marca-estado {
+      font-family: var(--dato);
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .15rem .5rem;
+      border: 2px solid var(--tinta);
+      white-space: nowrap;
+    }
+    .marca-estado--si { background: var(--amarillo); }
+    .marca-estado--no { background: transparent; color: var(--acero); border-color: var(--acero); }
+
+    /* ============================================================
+       MULTIMEDIA
+       ============================================================ */
+    .multimedia {
+      display: grid;
+      gap: 2rem;
+      margin-top: 1.75rem;
+    }
+
+    .video-marco {
+      position: relative;
+      padding-top: 56.25%;
+      border: 3px solid var(--tinta);
+      background: var(--tinta);
+    }
+
+    .video-marco iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .audio-tarjeta {
+      background: var(--papel);
+      border: 3px solid var(--tinta);
+      padding: 1.5rem;
+      align-self: start;
+    }
+
+    .audio-tarjeta audio { width: 100%; margin-top: .5rem; }
+
+    /* Mini reproductor: ventana chica con el video incrustado de YouTube */
+    .mini-marco {
+      position: relative;
+      padding-top: 56.25%;
+      border: 2px solid var(--tinta);
+      background: var(--tinta);
+      margin: 1rem 0 1.25rem;
+    }
+
+    .mini-marco iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .pie-audio {
+      font-family: var(--dato);
+      font-size: .9rem;
+      letter-spacing: .04em;
+      color: var(--acero);
+      margin-bottom: 0;
+    }
+
+    /* ============================================================
+       FORMULARIO
+       ============================================================ */
+    .formulario {
+      background: var(--tinta);
+      color: var(--papel);
+      padding: clamp(1.5rem, 5vw, 2.5rem);
+      border-radius: var(--radio);
+      margin-top: 1.75rem;
+    }
+
+    .formulario fieldset { border: 0; margin: 0; padding: 0; }
+    .formulario legend { padding: 0; margin-bottom: 1.25rem; }
+
+    .campo { margin-bottom: 1.25rem; }
+
+    .campo label {
+      display: block;
+      font-family: var(--dato);
+      font-size: .95rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin-bottom: .4rem;
+    }
+
+    .campo .pista {
+      display: block;
+      font-family: var(--texto);
+      font-size: .85rem;
+      letter-spacing: 0;
+      text-transform: none;
+      font-weight: 400;
+      color: var(--zinc);
+      margin-top: .25rem;
+    }
+
+    .campo input,
+    .campo textarea {
+      width: 100%;
+      font-family: var(--texto);
+      font-size: 1rem;
+      color: var(--tinta);
+      background: var(--papel);
+      border: 2px solid var(--papel);
+      border-radius: var(--radio);
+      padding: .7rem .8rem;
+    }
+
+    .campo textarea { min-height: 140px; resize: vertical; }
+
+    .campo input:focus,
+    .campo textarea:focus { border-color: var(--amarillo); outline: none; }
+
+    /* La validación de HTML5 pinta el borde en cuanto el dato es inválido */
+    .campo input:not(:placeholder-shown):invalid,
+    .campo textarea:not(:placeholder-shown):invalid { border-color: var(--minio); }
+
+    .boton {
+      font-family: var(--display);
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      color: var(--tinta);
+      background: var(--amarillo);
+      border: 3px solid var(--amarillo);
+      border-radius: var(--radio);
+      padding: .8rem 1.6rem;
+      cursor: pointer;
+      transition: transform .15s ease, background .15s ease;
+    }
+    .boton:hover { background: var(--papel); border-color: var(--papel); transform: translateY(-2px); }
+
+    .aviso {
+      margin-top: 1rem;
+      font-family: var(--dato);
+      font-weight: 700;
+      letter-spacing: .06em;
+      color: var(--amarillo);
+      min-height: 1.5rem;
+    }
+
+    /* ============================================================
+       PIE DE PÁGINA
+       ============================================================ */
+    .pie {
+      background: var(--tinta);
+      color: var(--zinc);
+      padding-block: 2.5rem 1.75rem;
+    }
+
+    .pie__rejilla {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .pie h3 {
+      font-size: .95rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--amarillo);
+      margin-bottom: .75rem;
+    }
+
+    .pie a { color: var(--zinc); }
+
+    .pie dl { margin: 0; }
+    .pie dt { font-weight: 600; color: var(--papel); }
+    .pie dd { margin: 0 0 .6rem; font-family: var(--dato); }
+
+    .redes { list-style: none; margin: 0; padding: 0; display: flex; gap: .75rem; }
+
+    .redes a {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border: 2px solid var(--acero);
+      border-radius: var(--radio);
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .redes a:hover { background: var(--amarillo); border-color: var(--amarillo); }
+    .redes svg { width: 20px; height: 20px; fill: var(--zinc); }
+    .redes a:hover svg { fill: var(--tinta); }
+
+    .pie__legal {
+      border-top: 1px solid var(--acero);
+      margin-top: 2rem;
+      padding-top: 1.25rem;
+      font-family: var(--dato);
+      font-size: .9rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    /* ============================================================
+       ADAPTACIÓN A PANTALLAS GRANDES (diseño responsivo)
+       ============================================================ */
+    @media (min-width: 760px) {
+      .presentacion { grid-template-columns: 1.05fr 1fr; gap: 3rem; }
+      .multimedia   { grid-template-columns: 1.6fr 1fr; }
+      .campos-dobles { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.25rem; }
+    }
+
+    @media (min-width: 1000px) {
+      .cabecera__fila { padding-block: 1.25rem; }
+    }
+
+    /* Respeta la preferencia de menos movimiento */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+
+    /* Ajustes para impresión (útil para las capturas del reporte) */
+    @media print {
+      .cabecera { position: static; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="salto" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- ==========================================================
+       HEADER: título del sitio + menú de navegación
+       ========================================================== -->
+  <header class="cabecera">
+    <div class="contenedor cabecera__fila">
+      <div class="marca">
+        <span class="marca__icono" aria-hidden="true">Y</span>
+        <div>
+          <h1 class="marca__nombre">Ferretería El Yunque</h1>
+          <span class="marca__lema">Desde 1998 en Cuautla</span>
+        </div>
+      </div>
+
+      <nav class="menu" aria-label="Navegación principal">
+        <ul>
+          <li><a href="#presentacion">La ferretería</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#multimedia">Video</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <div class="regla" role="presentation"></div>
+
+  <main id="contenido">
+
+    <!-- ========================================================
+         SECCIÓN DE PRESENTACIÓN: imagen + párrafo descriptivo
+         ======================================================== -->
+    <section class="seccion" id="presentacion">
+      <div class="contenedor presentacion">
+        <figure>
+          <img src="imagenes/muro-herramientas.svg"
+               alt="Muro de herramientas de la ferretería con martillo, llave inglesa, desarmador, serrucho y botes de pintura acomodados en repisas.">
+          <figcaption>Muro de herramienta manual en el pasillo 2 de la tienda.</figcaption>
+        </figure>
+
+        <div>
+          <p class="rotulo">La ferretería</p>
+          <h2>Todo lo que la obra necesita, a dos calles de la obra</h2>
+          <p class="entradilla">
+            El Yunque abrió en 1998 como un local de seis metros cuadrados que vendía
+            clavos por kilo. Hoy surtimos herramienta, plomería, material eléctrico y
+            pintura a albañiles, electricistas y familias que están arreglando su casa
+            el fin de semana. Lo que no cambió es la forma de atender: preguntamos qué
+            vas a hacer antes de vender, porque el tornillo correcto ahorra un viaje de
+            regreso.
+          </p>
+          <p class="entradilla">
+            Si necesitas material en volumen, cotizamos por WhatsApp y lo entregamos el
+            mismo día dentro de Cuautla.
+          </p>
+
+          <ul class="datos">
+            <li><b>28</b><span>Años abiertos</span></li>
+            <li><b>4,200</b><span>Claves en almacén</span></li>
+            <li><b>2 h</b><span>Entrega promedio</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="regla" role="presentation"></div>
+
+    <!-- ========================================================
+         TABLA DE INFORMACIÓN
+         ======================================================== -->
+    <section class="seccion seccion--zinc" id="productos">
+      <div class="contenedor">
+        <p class="rotulo">Productos</p>
+        <h2>Precios de mostrador</h2>
+        <p class="entradilla">
+          Lista vigente al 7 de agosto de 2026. Los precios incluyen IVA y pueden
+          cambiar sin previo aviso; confirma disponibilidad antes de venir por
+          pedidos grandes.
+        </p>
+
+        <div class="tabla-marco">
+          <table>
+            <caption>Productos más solicitados: presentación, precio y existencia</caption>
+            <thead>
+              <tr>
+                <th scope="col">Producto</th>
+                <th scope="col">Presentación</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Existencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Cemento gris</th>
+                <td>Saco de 50 kg</td>
+                <td>Moctezuma</td>
+                <td class="precio">$248.00</td>
+                <td><span class="marca-estado marca-estado--si">En piso</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Varilla corrugada 3/8"</th>
+                <td>Tramo de 12 m</td>
+                <td>Deacero</td>
+                <td class="precio">$189.50</td>
+                <td><span class="marca-estado marca-estado--si">En piso</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Pintura vinílica blanca</th>
+                <td>Cubeta de 19 L</td>
+                <td>Comex</td>
+                <td class="precio">$1,340.00</td>
+                <td><span class="marca-estado marca-estado--si">En piso</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Tubo PVC hidráulico 1/2"</th>
+                <td>Tramo de 6 m</td>
+                <td>Rotoplas</td>
+                <td class="precio">$96.00</td>
+                <td><span class="marca-estado marca-estado--no">Sobre pedido</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Cable THW calibre 12</th>
+                <td>Rollo de 100 m</td>
+                <td>Condumex</td>
+                <td class="precio">$1,875.00</td>
+                <td><span class="marca-estado marca-estado--si">En piso</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Juego de desarmadores</th>
+                <td>6 piezas</td>
+                <td>Truper</td>
+                <td class="precio">$319.00</td>
+                <td><span class="marca-estado marca-estado--no">Sobre pedido</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <div class="regla" role="presentation"></div>
+
+    <!-- ========================================================
+         SECCIÓN MULTIMEDIA: video incrustado + audio
+         ======================================================== -->
+    <section class="seccion" id="multimedia">
+      <div class="contenedor">
+        <p class="rotulo">Multimedia</p>
+        <h2>Cómo elegir el taquete correcto</h2>
+        <p class="entradilla">
+          La pregunta que más nos hacen en el mostrador. En tres minutos explicamos
+          qué taquete usar según el muro y qué broca le corresponde a cada medida.
+        </p>
+
+        <div class="multimedia">
+          <div class="video-marco">
+            <!-- Video: "Taquetes: qué broca usar, medidas y tipos" -->
+            <iframe
+              src="https://www.youtube.com/embed/5rDKObIoOKw"
+              title="Video: cómo elegir el taquete correcto según el tipo de muro"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+
+          <div class="audio-tarjeta">
+            <h3>Cápsula de mostrador</h3>
+            <p>Un minuto sobre medidas de taquetes, para escuchar mientras trabajas.</p>
+
+            <div class="mini-marco">
+              <iframe
+                src="https://www.youtube.com/embed/1qrE7tjs1WA"
+                title="Cápsula de audio: medidas y tipos de taquetes"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+
+            <p class="pie-audio">También en MP3, por si tienes poca señal:</p>
+            <audio controls preload="none" src="audio/spot-ferreteria.mp3">
+              Tu navegador no reproduce audio incrustado.
+              <a href="audio/spot-ferreteria.mp3">Descarga el spot en formato MP3</a>.
+            </audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="regla" role="presentation"></div>
+
+    <!-- ========================================================
+         FORMULARIO DE CONTACTO con validación HTML5
+         ======================================================== -->
+    <section class="seccion seccion--zinc" id="contacto">
+      <div class="contenedor">
+        <p class="rotulo">Contacto</p>
+        <h2>Pide tu cotización</h2>
+        <p class="entradilla">
+          Escribe qué material necesitas y en cuánto tiempo lo requieres. Contestamos
+          el mismo día en horario de tienda.
+        </p>
+
+        <form class="formulario" id="form-contacto">
+          <fieldset>
+            <legend><h3>Datos de contacto</h3></legend>
+
+            <div class="campos-dobles">
+              <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input type="text" id="nombre" name="nombre"
+                       placeholder="Isaac Jordán Jiménez"
+                       required minlength="3" maxlength="60"
+                       autocomplete="name">
+              </div>
+
+              <div class="campo">
+                <label for="correo">Correo electrónico</label>
+                <input type="email" id="correo" name="correo"
+                       placeholder="nombre@correo.com"
+                       required maxlength="80"
+                       autocomplete="email">
+              </div>
+            </div>
+
+            <div class="campo">
+              <label for="mensaje">
+                Mensaje
+                <span class="pista">Indica producto, cantidad y fecha en que lo necesitas.</span>
+              </label>
+              <textarea id="mensaje" name="mensaje"
+                        placeholder="Necesito 40 sacos de cemento para el jueves..."
+                        required minlength="10" maxlength="500"></textarea>
+            </div>
+
+            <button type="submit" class="boton">Enviar cotización</button>
+            <p class="aviso" id="aviso" role="status" aria-live="polite"></p>
+          </fieldset>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <div class="regla" role="presentation"></div>
+
+  <!-- ==========================================================
+       FOOTER: copyright + redes sociales
+       ========================================================== -->
+  <footer class="pie">
+    <div class="contenedor">
+      <div class="pie__rejilla">
+        <div>
+          <h3>Dónde estamos</h3>
+          <p>Av. Insurgentes 145, Col. Centro<br>Cuautla, Morelos</p>
+          <p><a href="tel:+527351234567">735 123 4567</a></p>
+        </div>
+
+        <div>
+          <h3>Horario</h3>
+          <dl>
+            <dt>Lunes a viernes</dt>
+            <dd>8:00 a 19:00</dd>
+            <dt>Sábado</dt>
+            <dd>8:00 a 17:00</dd>
+            <dt>Domingo</dt>
+            <dd>9:00 a 14:00</dd>
+          </dl>
+        </div>
+
+        <div>
+          <h3>Síguenos</h3>
+          <ul class="redes">
+            <li>
+              <a href="https://www.facebook.com/" aria-label="Facebook de Ferretería El Yunque">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M22 12a10 10 0 1 0-11.6 9.9v-7h-2.5V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.4h-1.2c-1.2 0-1.6.8-1.6 1.6V12h2.7l-.4 2.9h-2.3v7A10 10 0 0 0 22 12z"/></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/" aria-label="Instagram de Ferretería El Yunque">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.3 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.3 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.3-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.3-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.3A6.5 6.5 0 1 0 18.5 12 6.5 6.5 0 0 0 12 5.5zm0 10.7A4.2 4.2 0 1 1 16.2 12 4.2 4.2 0 0 1 12 16.2zm6.8-11a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5z"/></svg>
+              </a>
+            </li>
+            <li>
+              <a href="https://wa.me/527351234567" aria-label="WhatsApp de Ferretería El Yunque">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2a10 10 0 0 0-8.5 15.2L2 22l4.9-1.4A10 10 0 1 0 12 2zm5.5 14c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.7-.1-.4-.1-.9-.3-1.5-.6-2.7-1.2-4.4-3.9-4.5-4.1-.1-.2-1-1.4-1-2.6s.6-1.8.9-2c.2-.3.5-.3.6-.3h.5c.2 0 .4 0 .6.5s.8 1.9.8 2.1c.1.1.1.3 0 .5s-.2.4-.3.5l-.4.5c-.1.1-.3.3-.1.6s.6 1.1 1.4 1.8c1 .9 1.8 1.1 2.1 1.3.3.1.4.1.6-.1s.7-.8.9-1.1c.2-.3.4-.2.6-.1s1.6.7 1.8.9c.3.1.4.2.5.3s.1.5-.1 1z"/></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pie__legal">
+        <p>&copy; 2026 Ferretería El Yunque. Todos los derechos reservados.</p>
+        <p>Sitio desarrollado por Isaac Jordán Jiménez</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // El sitio es estático, así que el formulario no se envía a un servidor.
+    // Dejamos que HTML5 valide y mostramos la confirmación en pantalla.
+    const formulario = document.getElementById('form-contacto');
+    const aviso = document.getElementById('aviso');
+
+    formulario.addEventListener('submit', function (evento) {
+      evento.preventDefault();
+
+      if (!formulario.checkValidity()) {
+        formulario.reportValidity();
+        aviso.textContent = 'Revisa los campos marcados en rojo.';
+        return;
+      }
+
+      const nombre = document.getElementById('nombre').value.trim().split(' ')[0];
+      aviso.textContent = nombre + ', recibimos tu solicitud. Te contestamos hoy mismo.';
+      formulario.reset();
+    });
+  </script>
+</body>
+</html>
